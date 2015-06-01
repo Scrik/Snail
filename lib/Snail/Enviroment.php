@@ -218,7 +218,7 @@ class Snail_Enviroment
 	 */
 	public function display($tmpl)
 	{
-		$this->_time = round(microtime() - $this->_time, 4);
+		$this->_time = round(microtime() - $this->_time, 2);
 		$this->assign("time", $this->_time);
 		
 		echo $this->fetch($tmpl);
