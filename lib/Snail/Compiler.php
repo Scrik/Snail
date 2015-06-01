@@ -12,6 +12,11 @@ class Snail_Compiler implements Snail_CompilerInterface
 	private $_env;
 	private $_rules = array(
 		array(
+			"regexp" => '#^(\$.*)\|e$#',
+			"value" => '<?php echo htmlspecialchars({key}, ENT_QUOTES); ?>',
+			"replace" => array( 1 => "key" ),
+		),
+		array(
 			"regexp" => '#^(\$.*)$#',
 			"value" => '<?php echo {key}; ?>',
 			"replace" => array( 1 => "key" ),
