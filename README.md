@@ -1,7 +1,5 @@
 # Snail
-[![Latest Version](https://img.shields.io/packagist/v/fastin/snail.svg?style=flat-square)](https://packagist.org/packages/fastin/snail) 
-[![Total Downloads](https://img.shields.io/packagist/dt/fastin/snail.svg?style=flat-square)](https://packagist.org/packages/fastin/snail) 
-[![License](https://img.shields.io/packagist/l/fastin/snail.svg?style=flat-square)](https://packagist.org/packages/fastin/snail)
+[![Latest Stable Version](https://poser.pugx.org/fastin/snail/v/stable)](https://packagist.org/packages/fastin/snail) [![Total Downloads](https://poser.pugx.org/fastin/snail/downloads)](https://packagist.org/packages/fastin/snail) [![Latest Unstable Version](https://poser.pugx.org/fastin/snail/v/unstable)](https://packagist.org/packages/fastin/snail) [![License](https://poser.pugx.org/fastin/snail/license)](https://packagist.org/packages/fastin/snail)
 ## Installing
 1. Use [Composer](http://getcomposer.org) to install Snail into your project:
 
