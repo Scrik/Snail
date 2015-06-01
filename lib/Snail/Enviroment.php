@@ -19,6 +19,17 @@ class Snail_Enviroment
 	public 	$_vars		 = array();
 	private	$_time		 = 0;
 	
+	/*
+	 *	Constructor
+	 *
+	 * 	Available options:
+	 *
+	 *	* path: The path to the templates.
+	 *
+	 *	* compile_path: The path to the compiled templates.
+	 *
+	 *	@param $options
+	 */
 	public function __construct($options = array())
 	{
 		$options = array_merge(array(
@@ -53,7 +64,7 @@ class Snail_Enviroment
 	/**
 	 *	Gets the Compiler instance.
 	 *
-	 *	@return Snail_CompilerInterface A Snail_CompilerInterface instance
+	 *	@return Snail_CompilerInterface
 	 */
 	public function getCompiler()
 	{
@@ -66,7 +77,7 @@ class Snail_Enviroment
 	/**
 	 *	Sets the Compiler instance.
 	 *
-	 *	@param Snail_CompilerInterface $compiler A Snail_CompilerInterface instance
+	 *	@param Snail_CompilerInterface $compiler
 	 */
 	public function setCompiler(Snail_CompilerInterface $compiler)
 	{
@@ -100,6 +111,20 @@ class Snail_Enviroment
 	
 	public function __set($name, $value) {
 		$this->assign($name, $value);
+	}
+
+	/*
+	 *	Returns a variable or displays an error if the variable is not found.
+	 *
+	 *	@param $name
+	 *	@return string
+	 */
+	public function __get($name) {
+		if(isset($this->_vars[$name])) {
+			return $this->_vars[$name];
+		} else {
+			throw new Snail_Exception_Runtime("Undefined index: {$name}");
+		}
 	}
 	
 	/*
@@ -178,7 +203,6 @@ class Snail_Enviroment
 	{
 		$this->_compile($tmpl);
 		$template = $this->_compile_path . md5($this->_path . preg_replace('/\..+$/', '', $tmpl)) .".php";
-		extract($this->_vars);
 		include $template;	
 		while (!empty($this->_parents)) {
 			$this->_compile($tmpl = array_pop($this->_parents));
