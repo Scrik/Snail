@@ -5,7 +5,7 @@
 	"homepage": "https://github.com/fastin/snail",
 	"license": "MIT License",
 	"require": {
-		"php": ">=5.3"
+		"php": ">=5.1"
 	},
 	 "autoload": {
 		"psr-0" : {
