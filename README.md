@@ -10,7 +10,7 @@
 
   main.php:
   ```php
-  $snail = new \Snail_Enviroment(array(
+  $snail = new Snail_Enviroment(array(
 	"path" => "path/to/templates/",
 	"compile_path" => "path/to/compile_tpl/"
   ));
