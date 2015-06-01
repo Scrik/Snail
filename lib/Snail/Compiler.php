@@ -12,13 +12,13 @@ class Snail_Compiler implements Snail_CompilerInterface
 	private $_env;
 	private $_rules = array(
 		array(
-			"regexp" => '#^(\$.*)\|e$#',
-			"value" => '<?php echo htmlspecialchars({key}, ENT_QUOTES); ?>',
+			"regexp" => '#^\$(.*)\|e$#',
+			"value" => '<?php echo htmlspecialchars($this->{key}, ENT_QUOTES); ?>',
 			"replace" => array( 1 => "key" ),
 		),
 		array(
-			"regexp" => '#^(\$.*)$#',
-			"value" => '<?php echo {key}; ?>',
+			"regexp" => '#^\$(.*)$#',
+			"value" => '<?php echo $this->{key}; ?>',
 			"replace" => array( 1 => "key" ),
 		),
 		array(
@@ -98,7 +98,7 @@ class Snail_Compiler implements Snail_CompilerInterface
 		$compiled = $this->_env->_compile_path . md5($this->_env->_path . preg_replace('/\..+$/', '', $tmpl)) .".php";
 
 		if (!file_exists($template)) {
-			throw new \Exception("Template {$template} not found");
+			throw new Snail_Exception_Runtime("Template {$template} not found");
 		}
 		$timeT = filemtime($template);
 		$timeC = file_exists($compiled) ? filemtime($compiled) : 0;
