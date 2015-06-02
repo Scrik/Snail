@@ -9,6 +9,12 @@
  */
 class Snail_Filter_Escape implements Snail_Interface_Filter
 {
+	/*
+	 *	Escape value
+	 *
+	 *	@param $value
+	 *	@return string
+	*/
 	public function filter($value)
 	{
 		return htmlspecialchars($value, ENT_QUOTES);
