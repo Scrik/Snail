@@ -4,20 +4,21 @@
  *
  *	@author		Author: fastin. (https://github.com/fastin)
  *	@git		https://github.com/fastin/snail
- *	@version	0.3
+ *	@version	0.4
  *	@license	MIT License. (https://github.com/fastin/Snail/blob/master/LICENSE)
  */
 class Snail_Enviroment
 {
 	public	$_compile_path;
 	public 	$_path;
-	private $_parents	 = array();
+	private $_parents	= array();
 	private $_compiler;
-	private $_names		 = array();
-	private $_blocks	 = array();
-	public 	$_array		 = array();
-	public 	$_vars		 = array();
-	private	$_time		 = 0;
+	private $_names		= array();
+	private $_blocks	= array();
+	public 	$_array		= array();
+	public 	$_vars		= array();
+	private	$_time		= 0;
+	private $_filters	= array();
 	
 	/*
 	 *	Constructor
@@ -39,6 +40,7 @@ class Snail_Enviroment
 		
 		$this->setPath($options["path"]);
 		$this->setCompilePath($options["compile_path"]);
+		$this->_addDefaultFilters();
 	}
 	
 	/*
@@ -64,7 +66,7 @@ class Snail_Enviroment
 	/**
 	 *	Gets the Compiler instance.
 	 *
-	 *	@return Snail_CompilerInterface
+	 *	@return Snail_Interface_Compiler
 	 */
 	public function getCompiler()
 	{
@@ -77,11 +79,65 @@ class Snail_Enviroment
 	/**
 	 *	Sets the Compiler instance.
 	 *
-	 *	@param Snail_CompilerInterface $compiler
+	 *	@param Snail_Interface_Compiler $compiler
 	 */
-	public function setCompiler(Snail_CompilerInterface $compiler)
+	public function setCompiler(Snail_Interface_Compiler $compiler)
 	{
 		$this->_compiler = $compiler;
+	}
+
+	/**
+	 *	Adds the filter
+	 *
+	 *	@param $filter
+	 *	@param Snail_Interface_Filter $class 
+	 */
+	public function addFilter($filter, Snail_Interface_Filter $class)
+	{
+		if (!$class instanceof Snail_Interface_Filter) {
+			throw new LogicException('A filter must be an instance of Snail_Interface_Filter');
+		} else if ($class instanceof Snail_Interface_Filter) {
+			$this->_filters[$filter] = array(
+				"class" => $class,
+			);
+		}
+	}
+	
+	/**
+	 *	Gets the filter
+	 *
+	 *	@param $filter
+	 *	@return Snail_Interface_Filter
+	 */
+	public function getFilter($filter)
+	{
+		if(isset($this->_filters[$filter])) {
+			if(isset($this->_filters[$filter]["class"])) {
+				return $this->_filters[$filter]["class"];
+			}
+		} else {
+			throw new Snail_Exception_Runtime("Undefined filter: {$filter}");
+		}
+	}
+	
+	/**
+	 *	Removes the filter
+	 *
+	 *	@param $filter
+	 */
+	public function removeFilter($filter)
+	{
+		if(isset($this->_filters[$filter])) {
+			unset($this->_filters[$filter]);
+		} else {
+			throw new Snail_Exception_Runtime("Undefined filter: {$filter}");
+		}
+	}
+	
+	// Adds default filters
+	private function _addDefaultFilters()
+	{
+		$this->addFilter("e", new Snail_Filter_Escape);
 	}
 	
 	// Removes compiled templates
@@ -218,7 +274,7 @@ class Snail_Enviroment
 	 */
 	public function display($tmpl)
 	{
-		$this->_time = round(microtime() - $this->_time, 2);
+		$this->_time = round(microtime() - $this->_time, 4);
 		$this->assign("time", $this->_time);
 		
 		echo $this->fetch($tmpl);

@@ -4,17 +4,17 @@
  *
  *	@author		Author: fastin. (https://github.com/fastin)
  *	@git		https://github.com/fastin/snail
- *	@version	0.3
+ *	@version	0.4
  *	@license	MIT License. (https://github.com/fastin/Snail/blob/master/LICENSE)
  */
-class Snail_Compiler implements Snail_CompilerInterface
+class Snail_Compiler implements Snail_Interface_Compiler
 {	
 	private $_env;
 	private $_rules = array(
 		array(
-			"regexp" => '#^\$(.*)\|e$#',
-			"value" => '<?php echo htmlspecialchars($this->{key}, ENT_QUOTES); ?>',
-			"replace" => array( 1 => "key" ),
+			"regexp" => '#^\$(.*)\|(.*)$#',
+			"value" => '<?php echo $this->getFilter("{filter}")->filter($this->{key}); ?>',
+			"replace" => array( 1 => "key", 2 => "filter" ),
 		),
 		array(
 			"regexp" => '#^\$(.*)$#',
